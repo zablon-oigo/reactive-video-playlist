@@ -16,3 +16,8 @@ PLAYLIST_ID = config("PLAYLIST_ID")
 SCHEMA_REG_URL = config("SCHEMA_REGISTRY_URL", default="http://localhost:8081")
 BOOTSTRAP_SERVERS = config("KAFKA_BOOTSTRAP_SERVERS", default="localhost:9102")
 TOPIC = "playlist.alert"
+
+
+def fetch_playlist_video_ids(api_key, playlist_id):
+    url = "https://www.googleapis.com/youtube/v3/playlistItems"
+    page_token = None
