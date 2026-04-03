@@ -18,6 +18,16 @@ BOOTSTRAP_SERVERS = config("KAFKA_BOOTSTRAP_SERVERS", default="localhost:9102")
 TOPIC = "playlist.alert"
 
 
-def fetch_playlist_video_ids(api_key, playlist_id):
+
+def fetch_playlist_items_page(google_api_key, playlist_id, page_token=None):
     url = "https://www.googleapis.com/youtube/v3/playlistItems"
-    page_token = None
+    params = {
+        "key": google_api_key,
+        "playlistId": playlist_id,
+        "part": "contentDetails",
+        "maxResults": 50,
+        "pageToken": page_token
+    }
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    return response.json()
