@@ -31,3 +31,13 @@ def fetch_playlist_items_page(google_api_key, playlist_id, page_token=None):
     response = requests.get(url, params=params)
     response.raise_for_status()
     return response.json()
+
+def fetch_playlist_items(google_api_key, playlist_id, page_token=None):
+    payload = fetch_playlist_items_page(google_api_key, playlist_id, page_token)
+    
+    for item in payload.get("items", []):
+        yield item
+
+    next_page_token = payload.get("nextPageToken")
+    if next_page_token:
+        yield from fetch_playlist_items(google_api_key, playlist_id, next_page_token)
