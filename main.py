@@ -54,3 +54,11 @@ def fetch_video_details(google_api_key, video_id):
     response = requests.get(url, params=params)
     response.raise_for_status()
     return response.json().get("items", [])
+
+
+def on_delivery(err, msg):
+    if err is not None:
+        logging.error(f"Delivery failed for record {msg.key()}: {err}")
+    else:
+        logging.info(f"Record {msg.key()} successfully produced to {msg.topic()}")
+
