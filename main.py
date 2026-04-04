@@ -41,3 +41,16 @@ def fetch_playlist_items(google_api_key, playlist_id, page_token=None):
     next_page_token = payload.get("nextPageToken")
     if next_page_token:
         yield from fetch_playlist_items(google_api_key, playlist_id, next_page_token)
+
+
+
+def fetch_video_details(google_api_key, video_id):
+    url = "https://www.googleapis.com/youtube/v3/videos"
+    params = {
+        "key": google_api_key,
+        "id": video_id,
+        "part": "snippet,statistics"
+    }
+    response = requests.get(url, params=params)
+    response.raise_for_status()
+    return response.json().get("items", [])
