@@ -62,3 +62,56 @@ def on_delivery(err, msg):
     else:
         logging.info(f"Record {msg.key()} successfully produced to {msg.topic()}")
 
+
+def main():
+    logging.info("STARTING PIPELINE")
+
+    sr_client = SchemaRegistryClient({"url": SCHEMA_REG_URL})
+    video_value_schema = sr_client.get_latest_version("playlist-shema")
+
+    kafka_config = {
+        "bootstrap.servers": BOOTSTRAP_SERVERS,
+        "key.serializer": StringSerializer(),
+        "value.serializer": AvroSerializer(
+            sr_client,
+            video_value_schema.schema.schema_str,
+        )
+    }
+    producer = SerializingProducer(kafka_config)
+
+    try:
+        for video_item in fetch_playlist_items(API_KEY, PLAYLIST_ID):
+            video_id = video_item["contentDetails"]["videoId"]
+            
+            video_list = fetch_video_details(API_KEY, video_id)
+            
+            for video in video_list:
+                stats = video.get("statistics", {})
+                snippet = video.get("snippet", {})
+                
+                value = {
+                    "TITLE": snippet.get("title", "Unknown"),
+                    "VIEWS": int(stats.get("viewCount", 0)),
+                    "LIKES": int(stats.get("likeCount", 0)),
+                    "COMMENTS": int(stats.get("commentCount", 0)),
+                }
+
+                logging.info(f"Processing: {value['TITLE']}")
+                
+                producer.produce(
+                    topic="playlist.alert",
+                    key=video_id,
+                    value=value,
+                    on_delivery=on_delivery
+                )
+        
+        producer.flush()
+        logging.info("FINISHED")
+
+    except Exception as e:
+        logging.error(f"Pipeline crashed: {e}")
+        sys.exit(1)
+
+if __name__ == "__main__":    
+    logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
+    main()
