@@ -1,0 +1,18 @@
+[project]
+name = "alert"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "aioredis>=2.0.1",
+    "attrs>=25.4.0",
+    "authlib>=1.6.8",
+    "cachetools>=7.0.1",
+    "confluent-kafka>=2.13.0",
+    "fastavro>=1.12.1",
+    "httpie>=3.2.4",
+    "httpx>=0.28.1",
+    "python-decouple>=3.8",
+    "requests>=2.32.5",
+]
