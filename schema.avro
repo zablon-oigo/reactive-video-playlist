@@ -1,0 +1,12 @@
+{
+  "namespace": "com.playlist.alerts",
+  "type": "record",
+  "name": "YoutubeStats",
+  "fields": [
+    {"name": "VIDEO_ID", "type": "string"},
+    {"name": "TITLE", "type": "string"},
+    {"name": "VIEWS", "type": "int"},
+    {"name": "LIKES", "type": "int"},
+    {"name": "COMMENTS", "type": "int"}
+  ]
+}
