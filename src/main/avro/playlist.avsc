@@ -1,0 +1,12 @@
+{
+  "namespace": "com.playlist",
+  "type": "record",
+  "name": "YoutubeStats",
+  "fields": [
+    {"name": "video_id", "type": "string", "javaName": "videoId"},
+    {"name": "title",    "type": "string"},
+    {"name": "views",    "type": "int"},
+    {"name": "likes",    "type": "int"},
+    {"name": "comments", "type": "int"}
+  ]
+}
