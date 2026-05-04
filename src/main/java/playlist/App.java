@@ -23,4 +23,14 @@ public class App {
 
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
+        public static void main(String[] args) {
+        logger.info("STARTING PIPELINE");
+
+        Properties props = new Properties();
+        props.put("bootstrap.servers", BOOTSTRAP_SERVERS);
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", KafkaAvroSerializer.class.getName());
+        props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, SCHEMA_REGISTRY_URL);
+
+        }
 }
