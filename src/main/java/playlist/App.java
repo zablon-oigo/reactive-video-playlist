@@ -1,9 +1,13 @@
 package playlist;
 
 import java.net.http.HttpClient;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import io.confluent.kafka.serializers.AbstractKafkaSchemaSerDeConfig;
+import io.confluent.kafka.serializers.KafkaAvroSerializer;
 
 public class App {
 
@@ -31,6 +35,11 @@ public class App {
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", KafkaAvroSerializer.class.getName());
         props.put(AbstractKafkaSchemaSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG, SCHEMA_REGISTRY_URL);
+
+        props.put("acks", "all");
+        props.put("retries", 3);
+        props.put("batch.size", 16384);
+        props.put("linger.ms", 5);
 
         }
 }
