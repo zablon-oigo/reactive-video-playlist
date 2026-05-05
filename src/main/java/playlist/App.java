@@ -42,4 +42,11 @@ public class App {
         props.put("linger.ms", 5);
 
         }
+        
+        
+        private static void fetchPlaylistItems(KafkaProducer<String, YoutubeStats> producer) 
+                throws IOException, InterruptedException {
+
+                String pageToken = null;
+        }
 }
