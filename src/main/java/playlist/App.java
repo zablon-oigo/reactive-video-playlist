@@ -48,5 +48,18 @@ public class App {
                 throws IOException, InterruptedException {
 
                 String pageToken = null;
+        do {
+            StringBuilder url = new StringBuilder(
+                    "https://www.googleapis.com/youtube/v3/playlistItems" +
+                            "?key=" + API_KEY +
+                            "&playlistId=" + PLAYLIST_ID +
+                            "&part=contentDetails" +
+                            "&maxResults=50");
+
+            if (pageToken != null) {
+                url.append("&pageToken=").append(pageToken);
+            }
+
+            JsonNode payload = sendGetRequest(url.toString());
         }
 }
